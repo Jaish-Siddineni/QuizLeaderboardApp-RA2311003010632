@@ -46,7 +46,7 @@ Since this is a zero-dependency project, no build tools (like Maven or Gradle) a
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/Jaish-Siddineni/QuizLeaderboardApp-RA2311003010632
 cd your-repo
 ```
 
