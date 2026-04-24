@@ -24,5 +24,5 @@ Since this is a zero-dependency project, no build tools (like Maven or Gradle) a
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/your-username/your-repo.git](https://github.com/your-username/your-repo.git)
+   git clone https://github.com/your-username/your-repo.git
    ```
