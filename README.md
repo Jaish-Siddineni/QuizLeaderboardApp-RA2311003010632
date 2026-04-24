@@ -30,3 +30,59 @@ Instead of relying on external JSON parsing libraries like Jackson or Gson, this
 ## Deduplication Logic
 
 In distributed systems, the same event can be delivered multiple times across polls. This solution handles that with a `HashSet<String>`:
+```
+Poll 1 → { roundId: "R1", participant: "Alice", score: 10 } → NEW       → Alice total: 10
+Poll 3 → { roundId: "R1", participant: "Alice", score: 10 } → DUPLICATE → Ignored
+Final  → Alice totalScore: 10 ✓
+```
+## Prerequisites
+
+- Java Development Kit (JDK) 11 or higher (tested on JDK 17)
+- No external libraries or build tools required
+
+## How to Run
+
+Since this is a zero-dependency project, no build tools (like Maven or Gradle) are required.
+
+1. Clone the repository:
+```bash
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+```
+
+2. Compile the source file:
+```bash
+javac QuizLeaderboardApp.java
+```
+
+3. Run the application:
+```bash
+java QuizLeaderboardApp
+```
+
+The program will poll the API 10 times (approximately 45 seconds total) and print the submission result on completion.
+
+## Sample Output
+```
+Polling index: 0...
+Polling index: 1...
+...
+Polling index: 9...
+Submission Status: {"isCorrect":true,"isIdempotent":true,"submittedTotal":220,"expectedTotal":220,"message":"Correct!"}
+```
+## API Reference
+
+**Base URL:** `https://devapigw.vidalhealthtpa.com/srm-quiz-task`
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/quiz/messages?regNo=&poll=` | Fetch quiz events for a given poll index (0–9) |
+| POST | `/quiz/submit` | Submit the final leaderboard |
+
+## Submission Checklist
+
+- [x] 10 polls executed with 5-second delay between each
+- [x] Duplicate events deduplicated using `roundId + participant` key
+- [x] Scores aggregated per participant
+- [x] Leaderboard sorted by `totalScore` descending
+- [x] Leaderboard submitted exactly once
